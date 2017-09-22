@@ -25,7 +25,11 @@ function shuffle(array) {
     return array;
 }
 
-
+$(function() {
+  $('.fa').click(function() {
+    alert('Touch work!');
+  });
+});
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
