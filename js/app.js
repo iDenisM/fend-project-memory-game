@@ -61,7 +61,26 @@ $(function() {
   *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
   *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
   */
+  let clickList = [];
+
   $('li.card').click(function() {
+    // Open the card
     $(this).toggleClass('open show');
+    // Get the index of the clikced card
+    let index = $('.deck').children().index(this);
+    // Check if clicked list is less then two
+    if (clickList.length < 2) {
+      // - if yes then and add to the clik list
+      let cardName = cards[index];
+      clickList.push(cardName);
+      console.log(cardName);
+    }
+    else {
+      
+      // - if no then check if the cards in the list matches
+      // -- if yes then change status to matches
+      // -- if no then close the cards and clear the click list
+    }
+
   });
 });
