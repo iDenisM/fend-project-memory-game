@@ -4,7 +4,10 @@ $(function() {
   * Create a list that holds all of your cards
   */
   let cardsIcons = ['heart-o', 'hashtag', 'gift', 'legal', 'navicon', 'futbol-o', 'life-ring', 'folder'];
+  // Cards deck
   let cards = [];
+  // List of clicked cards
+  let clickList = [];
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -61,51 +64,67 @@ $(function() {
   *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
   *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
   */
-  // List of clicked cards
-  let clickList = [];
+
+  // Check if card has match class
+  let hasMatch = (card) => {
+    $(card).hasClass('match');
+    console.log("Match");
+  };
 
   // Display or close the card
-  let toggleCard = (card) => {
+  let toggleOpen = (card) => {
     // Get the index of the clikced card
-    let index = $('.deck').children().index(this);
+    let index = $('.deck').children().index(card);
+    console.log(index);
     // Get the card name
     let cardName = cards[index];
+    console.log(cardName);
     // Add to the card to click list
     clickList.push(cardName);
     // Toggle the card
     $(card).toggleClass('open show');
+
+    // window.setTimeout(function() {
+    //   $('.card').first().toggleClass('open show');
+    // }, 5000);
+    console.log(clickList.length);
   };
 
   // Open and lock the card in position
-  let openCard = (card) => {
-    // Remove the display
-    toggleCard(card);
-    // Add open class
-    $(card).toggleClass('match');
+  let toggleMatch = (card) => {
+    // Add match class
+    $(card).attr('class', 'card match');
   };
 
   // Check match cards
   let matchCard = () => {
     if (clickList[0] === clickList[1]) {
       // Open clicked cards
+      toggleMatch('.open');
+    } else {
+      // Close cards
+      //$('.open').toggleClass('open show');
+      // window.setTimeout(toggleOpen('.open'), 3000);
+      toggleOpen('.open');
+      // window.setTimeout(function() {
+      // }, 700);
     }
+    clickList = [];
   };
 
 
   $('li.card').click(function() {
     // Open the card
-    toggleCard(this);
+    let match = $(this).hasClass('match');
+    if (!match)
+      toggleOpen(this);
     // Check if ther is another card in click list
-    if (clickList.length > 0) {
+    if (clickList.length > 1) {
       // Check if the two cards match
-      if (clickList[0] === clickList[1])
-        openCard();
-    }
-    else {
-
-      // - if no then check if the cards in the list matches
-      // -- if yes then change status to matches
-      // -- if no then close the cards and clear the click list
+      window.setTimeout(function() {
+        matchCard();
+        // toggleOpen('.open');
+      }, 700);
     }
 
   });
