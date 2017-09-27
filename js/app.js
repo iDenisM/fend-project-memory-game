@@ -68,48 +68,43 @@ $(function() {
   // Check if card has match class
   let hasMatch = (card) => {
     $(card).hasClass('match');
-    console.log("Match");
   };
 
   // Display or close the card
   let toggleOpen = (card) => {
     // Get the index of the clikced card
     let index = $('.deck').children().index(card);
-    console.log(index);
-    // Get the card name
-    let cardName = cards[index];
-    console.log(cardName);
-    // Add to the card to click list
-    clickList.push(cardName);
+    // Add to the ID to click list
+    clickList.push(index);
     // Toggle the card
     $(card).toggleClass('open show');
-
-    // window.setTimeout(function() {
-    //   $('.card').first().toggleClass('open show');
-    // }, 5000);
-    console.log(clickList.length);
   };
 
   // Open and lock the card in position
-  let toggleMatch = (card) => {
+  let toggleMatch = (cardID) => {
     // Add match class
-    $(card).attr('class', 'card match');
+    $('.deck').children().eq(cardID).attr('class', 'card match');
   };
 
   // Check match cards
   let matchCard = () => {
-    if (clickList[0] === clickList[1]) {
+    // Set local vars
+    let cardID1 = clickList[0],
+        cardID2 = clickList[1],
+        card1 = cards[cardID1],
+        card2 = cards[cardID2];
+    // Check if id of card are different and cards are the same
+    if (cardID1 != cardID2 && card1 === card2) {
       // Open clicked cards
-      toggleMatch('.open');
+      toggleMatch(cardID1);
+      toggleMatch(cardID2);
     } else {
       // Close cards
-      //$('.open').toggleClass('open show');
-      // window.setTimeout(toggleOpen('.open'), 3000);
       toggleOpen('.open');
-      // window.setTimeout(function() {
-      // }, 700);
     }
     clickList = [];
+    // Increment moves
+    // ----- ADD THE MOVE INCREMETATION
   };
 
 
