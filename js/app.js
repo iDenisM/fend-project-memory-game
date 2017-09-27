@@ -8,7 +8,7 @@ $(function() {
   let cards = [];
   // List of clicked cards
   let clickList = [];
-  let moves = 1; 
+  let moves = 1;
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -36,6 +36,7 @@ $(function() {
 
   // Create the HTML block for the card
   let createCardHTML = (card) => {
+    $('.deck').empty();
     let content = '';
     // Loop each card to create the HTML block
     for (card of cards) {
@@ -57,6 +58,8 @@ $(function() {
   };
 
   startNewGame();
+
+
   /*
   * set up the event listener for a card. If a card is clicked:
   *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -115,7 +118,28 @@ $(function() {
     return $('.moves').text(moves++);
   }
 
-  $('li.card').click(function() {
+  // Reset moves to 0
+  let resetMoves = () => {
+    $('.moves').text('0');
+  };
+
+
+  // $('li.card').click(function() {
+  //   // Open the card
+  //   let match = $(this).hasClass('match');
+  //   if (!match)
+  //     toggleOpen(this);
+  //   // Check if ther is another card in click list
+  //   if (clickList.length > 1) {
+  //     // Check if the two cards match
+  //     window.setTimeout(function() {
+  //       matchCard();
+  //       // toggleOpen('.open');
+  //     }, 700);
+  //   }
+  // });
+
+  $('.deck').on('click', '.card', function() {
     // Open the card
     let match = $(this).hasClass('match');
     if (!match)
@@ -128,6 +152,12 @@ $(function() {
         // toggleOpen('.open');
       }, 700);
     }
+  });
 
+  $('.restart').click(function() {
+    cards = [];
+    clickList = [];
+    moves = 1;
+    startNewGame();
   });
 });
