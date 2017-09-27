@@ -8,6 +8,7 @@ $(function() {
   let cards = [];
   // List of clicked cards
   let clickList = [];
+  let moves = 1; 
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -17,8 +18,6 @@ $(function() {
     }
   };
 
-  // Fill the cards array with cards two per type
-  fillArrayTwoTimes(cards, cardsIcons);
 
   // Shuffle function from http://stackoverflow.com/a/2450976
   let shuffle = (array) => {
@@ -34,13 +33,6 @@ $(function() {
 
     return array;
   };
-  /*
-  * Display the cards on the page
-  *   - shuffle the list of cards using the provided "shuffle" method below
-  *   - loop through each card and create its HTML
-  *   - add each card's HTML to the page
-  */
-  shuffle(cards);
 
   // Create the HTML block for the card
   let createCardHTML = (card) => {
@@ -52,8 +44,19 @@ $(function() {
     $('.deck').append(content);
   };
 
-  createCardHTML(cards);
+  /*
+  * Display the cards on the page
+  *   - shuffle the list of cards using the provided "shuffle" method below
+  *   - loop through each card and create its HTML
+  *   - add each card's HTML to the page
+  */
+  let startNewGame = () => {
+    fillArrayTwoTimes(cards, cardsIcons);
+    shuffle(cards);
+    createCardHTML(cards);
+  };
 
+  startNewGame();
   /*
   * set up the event listener for a card. If a card is clicked:
   *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -100,13 +103,17 @@ $(function() {
       toggleMatch(cardID2);
     } else {
       // Close cards
-      toggleOpen('.open');
+      toggleOpen('li.open');
     }
     clickList = [];
     // Increment moves
-    // ----- ADD THE MOVE INCREMETATION
+    calcScore();
   };
 
+  // Add score
+  let calcScore = () => {
+    return $('.moves').text(moves++);
+  }
 
   $('li.card').click(function() {
     // Open the card
