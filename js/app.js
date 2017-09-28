@@ -123,22 +123,6 @@ $(function() {
     $('.moves').text('0');
   };
 
-
-  // $('li.card').click(function() {
-  //   // Open the card
-  //   let match = $(this).hasClass('match');
-  //   if (!match)
-  //     toggleOpen(this);
-  //   // Check if ther is another card in click list
-  //   if (clickList.length > 1) {
-  //     // Check if the two cards match
-  //     window.setTimeout(function() {
-  //       matchCard();
-  //       // toggleOpen('.open');
-  //     }, 700);
-  //   }
-  // });
-
   $('.deck').on('click', '.card', function() {
     // Open the card
     let match = $(this).hasClass('match');
@@ -154,10 +138,36 @@ $(function() {
     }
   });
 
+  // Mobile style
+  let setContainer = () => {
+    let bodyWidth = $('body').width(),
+        deckWidth = $('.deck').width(),
+        deckPadding = parseInt($('.deck').css('padding')),
+        cardDim = (bodyWidth - (deckPadding * 2) - 8) / 4;
+    console.log(bodyWidth);
+    if (bodyWidth < deckWidth) {
+      // Create score panel style
+      let scorePanelStyle = {'width': '80%'};
+      // Create deck style
+      let deckStyle = {'width': bodyWidth,
+                       'min-height': bodyWidth};
+      let cardStyle = {'width': cardDim,
+                       'height': cardDim};
+      // Change styles
+      $('.score-panel').css(scorePanelStyle);
+      $('.deck').css(deckStyle);
+      $('li.card').css(cardStyle);
+    }
+  };
+  setContainer();
+
+  // Restart game function
   $('.restart').click(function() {
     cards = [];
     clickList = [];
     moves = 1;
     startNewGame();
+    setContainer();
   });
+
 });
