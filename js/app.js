@@ -141,11 +141,10 @@ $(function() {
   // Mobile style
   let setContainer = () => {
     let bodyWidth = $('body').width(),
-        deckWidth = $('.deck').width(),
+        deckWidth = $('.deck').outerWidth(),
         deckPadding = parseInt($('.deck').css('padding')),
         cardDim = (bodyWidth - (deckPadding * 2) - 8) / 4;
-    console.log(bodyWidth);
-    if (bodyWidth < deckWidth) {
+    if (bodyWidth <= deckWidth) {
       // Create score panel style
       let scorePanelStyle = {'width': '80%'};
       // Create deck style
