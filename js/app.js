@@ -1,14 +1,16 @@
-
-$(function() {
+$(function () {
   /*
   * Create a list that holds all of your cards
   */
   let cardsIcons = ['heart-o', 'hashtag', 'gift', 'legal', 'navicon', 'futbol-o', 'life-ring', 'folder'];
+
   // Cards deck
   let cards = [];
+
   // List of clicked cards
   let clickList = [];
   let moves = 1;
+  let starsCounter = 1;
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -18,10 +20,11 @@ $(function() {
     }
   };
 
-
   // Shuffle function from http://stackoverflow.com/a/2450976
   let shuffle = (array) => {
-    let currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length;
+    let temporaryValue;
+    let randomIndex;
 
     while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
@@ -38,10 +41,12 @@ $(function() {
   let createCardHTML = (card) => {
     $('.deck').empty();
     let content = '';
+
     // Loop each card to create the HTML block
     for (card of cards) {
       content += '<li class="card"><i class="fa fa-' + card + '"></i></li>';
     };
+
     $('.deck').append(content);
   };
 
@@ -58,7 +63,6 @@ $(function() {
   };
 
   startNewGame();
-
 
   /*
   * set up the event listener for a card. If a card is clicked:
@@ -80,8 +84,10 @@ $(function() {
   let toggleOpen = (card) => {
     // Get the index of the clikced card
     let index = $('.deck').children().index(card);
+
     // Add to the ID to click list
     clickList.push(index);
+
     // Toggle the card
     $(card).toggleClass('open show');
   };
@@ -95,10 +101,11 @@ $(function() {
   // Check match cards
   let matchCard = () => {
     // Set local vars
-    let cardID1 = clickList[0],
-        cardID2 = clickList[1],
-        card1 = cards[cardID1],
-        card2 = cards[cardID2];
+    let cardID1 = clickList[0];
+    let cardID2 = clickList[1];
+    let card1 = cards[cardID1];
+    let card2 = cards[cardID2];
+
     // Check if id of card are different and cards are the same
     if (cardID1 != cardID2 && card1 === card2) {
       // Open clicked cards
@@ -108,63 +115,90 @@ $(function() {
       // Close cards
       toggleOpen('li.open');
     }
+
     clickList = [];
+
     // Increment moves
     calcScore();
   };
 
   // Add score
   let calcScore = () => {
-    return $('.moves').text(moves++);
-  }
+    $('.moves').text(moves++);
+    starsCounter++;
+    if (starsCounter > 10) {
+      $('fa-star').last().remove();
+      starsCounter = 1;
+    }
+  };
 
-  // Reset moves to 0
+  // Reset stars
+  let resetStars = () => {
+    let ul = '<ul></ul>';
+    let li = '<li></li>';
+    let i = '<i></i>';
+
+    // Remove old ul
+    $('.stars').remove();
+    $('.score-panel').prepend(ul);
+    $('.score-panel ul').toggleClass('stars');
+    for (i = 0; i < 3; i++) {
+      $('.stars').append(li);
+    }
+  };
+
+  // Reset moves
   let resetMoves = () => {
     $('.moves').text('0');
   };
 
-  $('.deck').on('click', '.card', function() {
+  $('.deck').on('click', '.card', function () {
+
     // Open the card
     let match = $(this).hasClass('match');
     if (!match)
       toggleOpen(this);
+
     // Check if ther is another card in click list
     if (clickList.length > 1) {
       // Check if the two cards match
-      window.setTimeout(function() {
+      window.setTimeout(function () {
         matchCard();
-        // toggleOpen('.open');
       }, 700);
     }
   });
 
   // Mobile style
   let setContainer = () => {
-    let bodyWidth = $('body').width(),
-        deckWidth = $('.deck').outerWidth(),
-        deckPadding = parseInt($('.deck').css('padding')),
-        cardDim = (bodyWidth - (deckPadding * 2) - 8) / 4;
+    let bodyWidth = $('body').width();
+    let deckWidth = $('.deck').outerWidth();
+    let deckPadding = parseInt($('.deck').css('padding'));
+    let cardDim = (bodyWidth - (deckPadding * 2) - 8) / 4;
     if (bodyWidth <= deckWidth) {
       // Create score panel style
-      let scorePanelStyle = {'width': '80%'};
-      // Create deck style
-      let deckStyle = {'width': bodyWidth,
-                       'min-height': bodyWidth};
-      let cardStyle = {'width': cardDim,
-                       'height': cardDim};
+      let scorePanelStyle = { 'width': '80%' };
+
+      // Create deck
+      let deckStyle = { 'width': bodyWidth,
+                        'min-height': bodyWidth };
+      let cardStyle = { 'width': cardDim,
+                        'height': cardDim };
       // Change styles
       $('.score-panel').css(scorePanelStyle);
       $('.deck').css(deckStyle);
       $('li.card').css(cardStyle);
     }
   };
+
   setContainer();
 
   // Restart game function
-  $('.restart').click(function() {
+  $('.restart').click(function () {
     cards = [];
     clickList = [];
     moves = 1;
+    resetStars();
+    resetMoves();
     startNewGame();
     setContainer();
   });
