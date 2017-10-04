@@ -75,11 +75,6 @@ $(function () {
   *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
   */
 
-  // Check if card has match class
-  let hasMatch = (card) => {
-    $(card).hasClass('match');
-  };
-
   // Display or close the card
   let toggleOpen = (card) => {
     // Get the index of the clikced card
@@ -126,25 +121,23 @@ $(function () {
   let calcScore = () => {
     $('.moves').text(moves++);
     starsCounter++;
+
+    // Condition for star removing
     if (starsCounter > 10) {
-      $('fa-star').last().remove();
+      $('.fa-star').last().toggleClass('fa-star fa-star-o');
       starsCounter = 1;
     }
   };
 
   // Reset stars
   let resetStars = () => {
-    let ul = '<ul></ul>';
-    let li = '<li></li>';
-    let i = '<i></i>';
-
-    // Remove old ul
-    $('.stars').remove();
-    $('.score-panel').prepend(ul);
-    $('.score-panel ul').toggleClass('stars');
-    for (i = 0; i < 3; i++) {
-      $('.stars').append(li);
-    }
+    $('.stars li').children().each(function (id) {
+      let star = $(this).hasClass('fa-star-o');
+      if (star) {
+        $(this).toggleClass('fa-star-o');
+        $(this).toggleClass('fa-star');
+      }
+    });
   };
 
   // Reset moves
@@ -152,6 +145,7 @@ $(function () {
     $('.moves').text('0');
   };
 
+  // Cards click function
   $('.deck').on('click', '.card', function () {
 
     // Open the card
