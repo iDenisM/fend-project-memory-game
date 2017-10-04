@@ -51,20 +51,6 @@ $(function () {
   };
 
   /*
-  * Display the cards on the page
-  *   - shuffle the list of cards using the provided "shuffle" method below
-  *   - loop through each card and create its HTML
-  *   - add each card's HTML to the page
-  */
-  let startNewGame = () => {
-    fillArrayTwoTimes(cards, cardsIcons);
-    shuffle(cards);
-    createCardHTML(cards);
-  };
-
-  startNewGame();
-
-  /*
   * set up the event listener for a card. If a card is clicked:
   *  - display the card's symbol (put this functionality in another function that you call from this one)
   *  - if the list already has another card, check to see if the two cards match
@@ -145,23 +131,6 @@ $(function () {
     $('.moves').text('0');
   };
 
-  // Cards click function
-  $('.deck').on('click', '.card', function () {
-
-    // Open the card
-    let match = $(this).hasClass('match');
-    if (!match)
-      toggleOpen(this);
-
-    // Check if ther is another card in click list
-    if (clickList.length > 1) {
-      // Check if the two cards match
-      window.setTimeout(function () {
-        matchCard();
-      }, 700);
-    }
-  });
-
   // Mobile style
   let setContainer = () => {
     let bodyWidth = $('body').width();
@@ -184,7 +153,13 @@ $(function () {
     }
   };
 
-  setContainer();
+  // Game end panel
+  let gameEnd = () => {
+    let endText = 'Winner Winner Chicken Dinner!';
+    $('.deck').empty();
+    $('<h2/>').text(endText).appendTo('.deck');
+    $()
+  };
 
   // Restart game function
   $('.restart').click(function () {
@@ -195,6 +170,38 @@ $(function () {
     resetMoves();
     startNewGame();
     setContainer();
+
+    gameEnd();
   });
 
+  // Cards click function
+  $('.deck').on('click', '.card', function () {
+    // Open the card
+    let match = $(this).hasClass('match');
+    if (!match)
+    toggleOpen(this);
+
+    // Check if ther is another card in click list
+    if (clickList.length > 1) {
+      // Check if the two cards match
+      window.setTimeout(function () {
+        matchCard();
+      }, 700);
+    }
+  });
+
+  /*
+  * Display the cards on the page
+  *   - shuffle the list of cards using the provided "shuffle" method below
+  *   - loop through each card and create its HTML
+  *   - add each card's HTML to the page
+  */
+  let startNewGame = () => {
+    fillArrayTwoTimes(cards, cardsIcons);
+    shuffle(cards);
+    createCardHTML(cards);
+    setContainer();
+  };
+
+  startNewGame();
 });
