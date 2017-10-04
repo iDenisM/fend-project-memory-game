@@ -158,7 +158,10 @@ $(function () {
     let endText = 'Winner Winner Chicken Dinner!';
     $('.deck').empty();
     $('<h2/>').text(endText).appendTo('.deck');
-    $()
+    $('<input/>').attr({
+      type: 'text',
+      id: 'nameInput'
+    }).appendTo('.deck');
   };
 
   // Restart game function
