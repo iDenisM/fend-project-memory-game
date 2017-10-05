@@ -3,14 +3,11 @@ $(function () {
   * Create a list that holds all of your cards
   */
   let cardsIcons = ['heart-o', 'hashtag', 'gift', 'legal', 'navicon', 'futbol-o', 'life-ring', 'folder'];
-
-  // Cards deck
-  let cards = [];
-
-  // List of clicked cards
-  let clickList = [];
-  let moves = 1;
-  let starsCounter = 1;
+  let cards = []; // Cards deck
+  let clickList = []; // List of clicked cards
+  let moves = 1; // Moves made
+  let starsCounter = 1; // Count stars
+  let matchedCards = 0; // How many cards matched
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -127,7 +124,7 @@ $(function () {
   };
 
   // Reset moves
-  let resetMoves = () => {
+  let resetMovesText = () => {
     $('.moves').text('0');
   };
 
@@ -153,10 +150,6 @@ $(function () {
     }
   };
 
-  // Leaderboard panel
-  let lederPanel = () => {
-    $('.endGame').empty();
-  };
 
   // Game end panel
   let gameEnd = () => {
@@ -179,23 +172,40 @@ $(function () {
     }).appendTo('.endGame');
     $('<p/>').text('submit').appendTo('#recordScoreBtn');
     $('#recordScoreBtn').on('click', function () {
-      let getName = $('#nameInput').val();
-      let getScore = 100;
+      let getName = 'name:' + $('#nameInput').val();
+      let getScore = moves - 1;
       let setPlayerScore = getName + ' ' + getScore;
-      localStorage.setItem('player', setPlayerScore);
-      lederPanel();
+      localStorage.setItem(getName, getScore);
+      laderPanel();
     });
   };
 
+  // Leaderboard panel
+  let laderPanel = () => {
+    $('.endGame').empty();
+    $('<h2/>').text('Top 5 players:').appendTo('.endGame');
+    for (let i in localStorage) {
+      let name = i.split(':');
+      $('<p/>').text(name[1] + ' : ' + localStorage[i]).appendTo('.endGame');
+    }
+    $('.restart').clone().css({
+      'width': '60px',
+      'margin': '0 auto',
+      'font-size': '30px',
+      'text-align': 'center',
+      'cursor': 'pointer'
+    }).appendTo('.endGame');
+  };
+
   // Restart game function
-  $('.restart').click(function () {
+  $('.container').on('click', '.restart', function () {
     cards = [];
     clickList = [];
-    // moves = 1;
-    // resetStars();
-    // resetMoves();
-    // startNewGame();
-    // setContainer();
+    moves = 1;
+    resetStars();
+    resetMovesText();
+    startNewGame();
+    setContainer();
 
     gameEnd();
   });
