@@ -153,26 +153,49 @@ $(function () {
     }
   };
 
+  // Leaderboard panel
+  let lederPanel = () => {
+    $('.endGame').empty();
+  };
+
   // Game end panel
   let gameEnd = () => {
     let endText = 'Winner Winner Chicken Dinner!';
     $('.deck').empty();
-    $('<h2/>').text(endText).appendTo('.deck');
+    $('<div/>').attr('class', 'endGame').appendTo('.deck');
+    $('<h2/>').text(endText).appendTo('.endGame');
+    $('<p/>').text('You have made: ' + (moves - 1) + ' moves').appendTo('.endGame');
+    $('<p/>').text('Please enter you name for leaderboard:').appendTo('.endGame');
     $('<input/>').attr({
       type: 'text',
       id: 'nameInput'
-    }).appendTo('.deck');
+    }).appendTo('.endGame');
+    $('<div/>').attr('id', 'recordScoreBtn').css({
+      'background-color': 'blue',
+      'width': '100px',
+      'height': '30px',
+      'margin': '3% auto',
+      'text-align': 'center'
+    }).appendTo('.endGame');
+    $('<p/>').text('submit').appendTo('#recordScoreBtn');
+    $('#recordScoreBtn').on('click', function () {
+      let getName = $('#nameInput').val();
+      let getScore = 100;
+      let setPlayerScore = getName + ' ' + getScore;
+      localStorage.setItem('player', setPlayerScore);
+      lederPanel();
+    });
   };
 
   // Restart game function
   $('.restart').click(function () {
     cards = [];
     clickList = [];
-    moves = 1;
-    resetStars();
-    resetMoves();
-    startNewGame();
-    setContainer();
+    // moves = 1;
+    // resetStars();
+    // resetMoves();
+    // startNewGame();
+    // setContainer();
 
     gameEnd();
   });
