@@ -102,6 +102,14 @@ body {
   margin: 0 auto;
 }
 
+.endGame #recordScoreBtn {
+  background-color: blue;
+  width: 100px;
+  height: 30px;
+  margin: 3% auto;
+  text-align: center;
+}
+
 /*
  * Styles for the Score Panel
  */

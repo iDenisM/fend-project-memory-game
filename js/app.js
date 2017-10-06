@@ -89,6 +89,7 @@ $(function () {
       // Open clicked cards
       toggleMatch(cardID1);
       toggleMatch(cardID2);
+      matchedCards++;
     } else {
       // Close cards
       toggleOpen('li.open');
@@ -98,6 +99,10 @@ $(function () {
 
     // Increment moves
     calcScore();
+
+    // Check for end game event
+    if (matchedCards === 8)
+      gameEndPanel();
   };
 
   // Add score
@@ -129,7 +134,7 @@ $(function () {
   };
 
   // Mobile style
-  let setContainer = () => {
+  let setMobileContainer = () => {
     let bodyWidth = $('body').width();
     let deckWidth = $('.deck').outerWidth();
     let deckPadding = parseInt($('.deck').css('padding'));
@@ -152,7 +157,7 @@ $(function () {
 
 
   // Game end panel
-  let gameEnd = () => {
+  let gameEndPanel = () => {
     let endText = 'Winner Winner Chicken Dinner!';
     $('.deck').empty();
     $('<div/>').attr('class', 'endGame').appendTo('.deck');
@@ -199,15 +204,17 @@ $(function () {
 
   // Restart game function
   $('.container').on('click', '.restart', function () {
+    // Reset variables
     cards = [];
     clickList = [];
     moves = 1;
+    matchedCards = 0;
+
+    // Start main functions
     resetStars();
     resetMovesText();
     startNewGame();
-    setContainer();
-
-    gameEnd();
+    setMobileContainer();
   });
 
   // Cards click function
@@ -236,7 +243,7 @@ $(function () {
     fillArrayTwoTimes(cards, cardsIcons);
     shuffle(cards);
     createCardHTML(cards);
-    setContainer();
+    setMobileContainer();
   };
 
   startNewGame();
