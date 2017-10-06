@@ -9,6 +9,7 @@ $(function () {
   let starsCounter = 1; // Count stars
   let matchedCards = 0; // How many cards matched
   let currentPlayer = ''; // Current player name
+  let twoClicks = false;
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -85,12 +86,13 @@ $(function () {
     let card1 = cards[cardID1];
     let card2 = cards[cardID2];
 
-    // Check if id of card are different and cards are the same
+    // Check if id of card are different and type of cards are the same
     if (cardID1 != cardID2 && card1 === card2) {
       // Open clicked cards
       toggleMatch(cardID1);
       toggleMatch(cardID2);
       matchedCards++;
+
     } else {
       // Close cards
       toggleOpen('li.open');
@@ -104,6 +106,8 @@ $(function () {
     // Check for end game event
     if (matchedCards === 8)
       gameEndPanel();
+
+    twoClicks = false;
   };
 
   // Add score
@@ -254,12 +258,16 @@ $(function () {
   $('.deck').on('click', '.card', function () {
     // Open the card
     let match = $(this).hasClass('match');
-    if (!match)
-    toggleOpen(this);
+    let open = $(this).hasClass('open');
+
+    if (!open && !match && !twoClicks) {
+      toggleOpen(this);
+    }
 
     // Check if ther is another card in click list
     if (clickList.length > 1) {
       // Check if the two cards match
+      twoClicks = true;
       window.setTimeout(function () {
         matchCard();
       }, 700);
