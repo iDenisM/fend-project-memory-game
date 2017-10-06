@@ -99,15 +99,28 @@ body {
 
 .endGame input {
   display: block;
-  margin: 0 auto;
+  margin: 10px auto 20px auto;
+}
+
+.endGame #nameInput {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .endGame #recordScoreBtn {
-  background-color: blue;
   width: 100px;
   height: 30px;
   margin: 3% auto;
+  padding: 4px 16px;
+  background-color: #60caff;
+  color: #000;
+  text-transform: uppercase;
+  text-shadow: 0 1px rgba(0,0,0,0.1);
   text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+  cursor: pointer;
+  user-select: none;
 }
 
 .endGame .restart {

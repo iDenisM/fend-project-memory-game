@@ -168,8 +168,10 @@ $(function () {
       type: 'text',
       id: 'nameInput'
     }).appendTo('.endGame');
-    $('<div/>').attr('id', 'recordScoreBtn').appendTo('.endGame');
-    $('<p/>').text('submit').appendTo('#recordScoreBtn');
+    $('<div/>').attr({
+      'id': 'recordScoreBtn',
+      'role': 'button'
+    }).text('submit').appendTo('.endGame');
     $('#recordScoreBtn').on('click', function () {
       let getName = 'name:' + $('#nameInput').val();
       let getScore = moves - 1;
@@ -234,5 +236,6 @@ $(function () {
     setMobileContainer();
   };
 
-  startNewGame();
+  // startNewGame();
+  gameEndPanel();
 });
