@@ -8,6 +8,7 @@ $(function () {
   let moves = 1; // Moves made
   let starsCounter = 1; // Count stars
   let matchedCards = 0; // How many cards matched
+  let currentPlayer = ''; // Current player name
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -173,7 +174,10 @@ $(function () {
       'role': 'button'
     }).text('submit').appendTo('.endGame');
     $('#recordScoreBtn').on('click', function () {
-      let getName = 'name:' + $('#nameInput').val();
+      // Create local name registration
+      // Use a prefix to separate from other local storage data
+      currentPlayer = $('#nameInput').val();
+      let getName = 'name:' + currentPlayer;
       let getScore = moves - 1;
       let setPlayerScore = getName + ' ' + getScore;
       localStorage.setItem(getName, getScore);
@@ -185,11 +189,49 @@ $(function () {
   let laderPanel = () => {
     $('.endGame').empty();
     $('<h2/>').text('Top 5 players:').appendTo('.endGame');
-    for (let i in localStorage) {
-      let name = i.split(':');
-      $('<p/>').text(name[1] + ' : ' + localStorage[i]).appendTo('.endGame');
-    }
+
+    // Add the top five list
+    topFiveList();
+
+    // Add restart button a the end
     $('.restart').clone().appendTo('.endGame');
+  };
+
+  let topFiveList = () => {
+    // Populate new array with data from local storage
+    let localScoreArray = [];
+    for (let i in localStorage) {
+      let playerName = i.split(':');
+      let playerData = {name: playerName[1], score: localStorage[i]};
+      localScoreArray.push(playerData);
+    }
+
+    // Sort localScoreArray from smaller to bigger
+    localScoreArray.sort(function (a,b) { return a.score - b.score });
+
+    // Check if the player is in top five
+    let playerNotInTop = true;
+    let length;
+    localScoreArray.length < 5 ? length = localScoreArray.length : length = 5;
+
+    for (i = 0; i < localScoreArray.length; i++) {
+      let newScore = $('<p/>').text(i + '. ' + localScoreArray[i].name + ' : ' + localScoreArray[i].score);
+      // Create the top five list
+      if (i < 5) {
+        if (localScoreArray[i].name === currentPlayer) {
+          newScore.css('font-weight', 'bold').appendTo('.endGame');
+        }
+        else {
+          newScore.appendTo('.endGame');
+        }
+      } else {
+        // Add player to the bottom of the list if not in top five
+        if (localScoreArray[i].name === currentPlayer) {
+          $('<br>').appendTo('.endGame');
+          newScore.css('font-weight', 'bold').appendTo('.endGame');
+        }
+      }
+    }
   };
 
   // Restart game function
@@ -198,6 +240,7 @@ $(function () {
     cards = [];
     clickList = [];
     moves = 1;
+    starsCounter = 1;
     matchedCards = 0;
 
     // Start main functions
@@ -236,6 +279,6 @@ $(function () {
     setMobileContainer();
   };
 
-  // startNewGame();
-  gameEndPanel();
+  startNewGame();
+  // gameEndPanel();
 });
