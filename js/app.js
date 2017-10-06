@@ -219,7 +219,7 @@ $(function () {
     localScoreArray.length < 5 ? length = localScoreArray.length : length = 5;
 
     for (i = 0; i < localScoreArray.length; i++) {
-      let newScore = $('<p/>').text(i + '. ' + localScoreArray[i].name + ' : ' + localScoreArray[i].score);
+      let newScore = $('<p/>').text((i + 1) + '. ' + localScoreArray[i].name + ' : ' + localScoreArray[i].score);
       // Create the top five list
       if (i < 5) {
         if (localScoreArray[i].name === currentPlayer) {
