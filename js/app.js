@@ -168,13 +168,7 @@ $(function () {
       type: 'text',
       id: 'nameInput'
     }).appendTo('.endGame');
-    $('<div/>').attr('id', 'recordScoreBtn').css({
-      'background-color': 'blue',
-      'width': '100px',
-      'height': '30px',
-      'margin': '3% auto',
-      'text-align': 'center'
-    }).appendTo('.endGame');
+    $('<div/>').attr('id', 'recordScoreBtn').appendTo('.endGame');
     $('<p/>').text('submit').appendTo('#recordScoreBtn');
     $('#recordScoreBtn').on('click', function () {
       let getName = 'name:' + $('#nameInput').val();
@@ -193,13 +187,7 @@ $(function () {
       let name = i.split(':');
       $('<p/>').text(name[1] + ' : ' + localStorage[i]).appendTo('.endGame');
     }
-    $('.restart').clone().css({
-      'width': '60px',
-      'margin': '0 auto',
-      'font-size': '30px',
-      'text-align': 'center',
-      'cursor': 'pointer'
-    }).appendTo('.endGame');
+    $('.restart').clone().appendTo('.endGame');
   };
 
   // Restart game function

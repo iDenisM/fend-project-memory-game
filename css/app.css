@@ -110,6 +110,14 @@ body {
   text-align: center;
 }
 
+.endGame .restart {
+  width: 60px;
+  margin: 0 auto;
+  font-size: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
 /*
  * Styles for the Score Panel
  */
