@@ -75,7 +75,59 @@ $(function () {
   // Open and lock the card in position
   let toggleMatch = (cardID) => {
     // Add match class
-    $('.deck').children().eq(cardID).attr('class', 'card match');
+    let card = $('.deck').children().eq(cardID);
+    let cardWidth = card.width();
+    let animWidthIn = cardWidth * 0.9;
+    let animMarginIn = cardWidth * 0.1 / 2;
+
+    // Shrink match animation
+    let animMatchIn = {
+      width: animWidthIn,
+      height: animWidthIn,
+      margin: animMarginIn,
+    };
+
+    // Stretch match atnimation
+    let animMathcOut = {
+      width: cardWidth,
+      height: cardWidth,
+      margin: 0,
+    };
+
+    // Card set properties
+    card.attr('class', 'card match');
+    card.animate(animMatchIn, 300);
+    card.animate(animMathcOut, 300);
+  };
+
+  // Rotate
+  let animNotMatch = (cardID, degree, time) => {
+    // for (cardID of cards) {
+      let cards = $('.deck').children().eq(cardID);
+
+      $({deg: 0}).animate({deg: degree}, {
+        duration: time,
+        step: function(now){
+          cards.css({
+            transform: "rotate(" + now + "deg)"
+          });
+        }
+      }).animate({deg: -20}, {
+        duration: 100,
+        step: function(now){
+          cards.css({
+            transform: "rotate(" + now + "deg)"
+          });
+        }
+      }).animate({deg: 0}, {
+        duration: 50,
+        step: function(now){
+          cards.css({
+            transform: "rotate(" + now + "deg)"
+          });
+        }
+      });
+    // }
   };
 
   // Check match cards
@@ -91,10 +143,13 @@ $(function () {
       // Open clicked cards
       toggleMatch(cardID1);
       toggleMatch(cardID2);
+
       matchedCards++;
 
     } else {
       // Close cards
+      animNotMatch(cardID1);
+      animNotMatch(cardID2);
       toggleOpen('li.open');
     }
 
@@ -206,7 +261,7 @@ $(function () {
     let localScoreArray = [];
     for (let i in localStorage) {
       let playerName = i.split(':');
-      let playerData = {name: playerName[1], score: localStorage[i]};
+      let playerData = { name: playerName[1], score: localStorage[i] };
       localScoreArray.push(playerData);
     }
 
