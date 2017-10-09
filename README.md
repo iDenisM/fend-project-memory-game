@@ -2,19 +2,34 @@
 
 ## Table of Contents
 
+* [Install](#install)
 * [Instructions](#instructions)
 * [Contributing](#contributing)
+* [Bugs](#bugs)
+
+## Install
+First download the project from GitHub. You can do it with command line or direct download the zip file.
+
+Using command line clone the project from github:
+```
+$ clone https://github.com/iDenisM/fend-project-memory-game.git
+```
+
+Alternative way of installing.
+Download the zip file from https://github.com/iDenisM/fend-project-memory-game.git
+Unzip in any floder.
 
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
-
-To get started, open `js/app.js` and start building out the app's functionality
-
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+To start play open the index.html file from the project folder.
+In game you have to open two cards at a time and see if they match. If cards match they will stay opened if not they will close and you can open other two cards.
+The goal is to find all the matches. Once all matches are found you will be shown your score and you have to write your name for the leaderboard.
+You can start start a new game at any time by clicking the reload button in the right up corner. Also in leaderboard menu you can restart the game with a reload button in the bottom of the screen.
+You can play this game in PC mode or Mobile mode.
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+This repository is a project for Udacity Frond-End Developer Nanodegree. You can contribute in any way to improve this project.
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+## BUGS
+No bugs yet known.
