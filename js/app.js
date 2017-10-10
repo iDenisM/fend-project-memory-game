@@ -99,37 +99,6 @@ $(function () {
     card.animate(animMatchIn, 300);
     card.animate(animMathcOut, 300);
   };
-
-  // Rotate
-  let animNotMatch = (cardID, degree, time) => {
-    // for (cardID of cards) {
-      let cards = $('.deck').children().eq(cardID);
-
-      $({deg: 0}).animate({deg: degree}, {
-        duration: time,
-        step: function(now){
-          cards.css({
-            transform: "rotate(" + now + "deg)"
-          });
-        }
-      }).animate({deg: -20}, {
-        duration: 100,
-        step: function(now){
-          cards.css({
-            transform: "rotate(" + now + "deg)"
-          });
-        }
-      }).animate({deg: 0}, {
-        duration: 50,
-        step: function(now){
-          cards.css({
-            transform: "rotate(" + now + "deg)"
-          });
-        }
-      });
-    // }
-  };
-
   // Check match cards
   let matchCard = () => {
     // Set local vars
@@ -148,8 +117,6 @@ $(function () {
 
     } else {
       // Close cards
-      animNotMatch(cardID1);
-      animNotMatch(cardID2);
       toggleOpen('li.open');
     }
 
