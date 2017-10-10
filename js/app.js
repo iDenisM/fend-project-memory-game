@@ -9,7 +9,8 @@ $(function () {
   let starsCounter = 1; // Count stars
   let matchedCards = 0; // How many cards matched
   let currentPlayer = ''; // Current player name
-  let twoClicks = false;
+  let twoClicks = false; // Check if there was done two clicks
+  let timer; // The timer variable
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -126,8 +127,10 @@ $(function () {
     calcScore();
 
     // Check for end game event
-    if (matchedCards === 8)
+    if (matchedCards === 8) {
+      stopTimer();
       gameEndPanel();
+    }
 
     twoClicks = false;
   };
@@ -182,14 +185,16 @@ $(function () {
     }
   };
 
-
   // Game end panel
   let gameEndPanel = () => {
+
     let endText = 'Winner Winner Chicken Dinner!';
     $('.deck').empty();
     $('<div/>').attr('class', 'endGame').appendTo('.deck');
     $('<h2/>').text(endText).appendTo('.endGame');
+    $('.stars').clone().appendTo('.endGame')
     $('<p/>').text('You have made: ' + (moves - 1) + ' moves').appendTo('.endGame');
+    $('<p/>').text('Game ended in: ' + $('.timer').text()).appendTo('.endGame');
     $('<p/>').text('Please enter you name for leaderboard:').appendTo('.endGame');
     $('<input/>').attr({
       type: 'text',
@@ -204,8 +209,10 @@ $(function () {
       // Use a prefix to separate from other local storage data
       currentPlayer = $('#nameInput').val();
       let getName = 'name:' + currentPlayer;
-      let getScore = moves - 1;
-      let setPlayerScore = getName + ' ' + getScore;
+      let score = $('.timer').text();
+      score = score.replace(" ", "").replace(/d|h|m|s/g, "");
+      score = parseInt(score);
+      let getScore = Math.floor((moves - 1) / score * 1000);
       localStorage.setItem(getName, getScore);
       laderPanel();
     });
@@ -233,7 +240,7 @@ $(function () {
     }
 
     // Sort localScoreArray from smaller to bigger
-    localScoreArray.sort(function (a,b) { return a.score - b.score });
+    localScoreArray.sort(function (a,b) { return b.score - a.score });
 
     // Check if the player is in top five
     let playerNotInTop = true;
@@ -258,6 +265,37 @@ $(function () {
         }
       }
     }
+  };
+
+  // Start timer function
+  // source: https://www.w3schools.com/howto/howto_js_countdown.asp
+  let startTimer = () => {
+    // Get todays date and time
+    let now = new Date().getTime();
+
+    // Find the distance between now an the count down date
+    let distance = now - timerDate;
+
+    // Time calculations for days, hours, minutes and seconds
+    let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Output the result in an element with id='demo'
+    if (days > 0)
+      $('.timer').text(days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ');
+    else if (hours > 0)
+      $('.timer').text(hours + 'h ' + minutes + 'm ' + seconds + 's ');
+    else if (minutes > 0)
+      $('.timer').text(minutes + 'm ' + seconds + 's ');
+    else
+      $('.timer').text(seconds + 's ');
+  };
+
+  // Stop timer function
+  let stopTimer = () => {
+    clearInterval(timer);
   };
 
   // Restart game function
@@ -303,6 +341,11 @@ $(function () {
   *   - add each card's HTML to the page
   */
   let startNewGame = () => {
+    // Set starting values
+    timerDate = new Date().getTime();
+    timer = setInterval(function() { startTimer() }, 1000);
+
+    // Start main functions
     fillArrayTwoTimes(cards, cardsIcons);
     shuffle(cards);
     createCardHTML(cards);
@@ -310,5 +353,4 @@ $(function () {
   };
 
   startNewGame();
-  // gameEndPanel();
 });
