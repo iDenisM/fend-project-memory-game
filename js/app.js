@@ -73,7 +73,7 @@ $(function () {
   };
 
   // Open and lock the card in position
-  let toggleMatch = (cardIDs) => {
+  let toggleMatch = (cardID) => {
     // Add match class
     let card = $('.deck').children().eq(cardID);
     let cardWidth = card.width();
