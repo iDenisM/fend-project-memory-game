@@ -50,17 +50,6 @@ $(function () {
     $('.deck').append(content);
   };
 
-  /*
-  * set up the event listener for a card. If a card is clicked:
-  *  - display the card's symbol (put this functionality in another function that you call from this one)
-  *  - if the list already has another card, check to see if the two cards match
-  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
-  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
-  *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
-  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
-  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
-  */
-
   // Display or close the card
   let toggleOpen = (card) => {
     // Get the index of the clikced card
@@ -139,9 +128,10 @@ $(function () {
   let calcScore = () => {
     $('.moves').text(moves++);
     starsCounter++;
+    let minStars = $('.moves').text();
 
     // Condition for star removing
-    if (starsCounter > 10) {
+    if (starsCounter > 10 && minStars < 21) {
       $('.fa-star').last().toggleClass('fa-star fa-star-o');
       starsCounter = 1;
     }
@@ -171,13 +161,13 @@ $(function () {
     let cardDim = (bodyWidth - (deckPadding * 2) - 8) / 4;
     if (bodyWidth <= deckWidth) {
       // Create score panel style
-      let scorePanelStyle = { 'width': '80%' };
+      let scorePanelStyle = { width: '80%' };
 
       // Create deck
-      let deckStyle = { 'width': bodyWidth,
+      let deckStyle = { width: bodyWidth,
                         'min-height': bodyWidth };
-      let cardStyle = { 'width': cardDim,
-                        'height': cardDim };
+      let cardStyle = { width: cardDim,
+                        height: cardDim };
       // Change styles
       $('.score-panel').css(scorePanelStyle);
       $('.deck').css(deckStyle);
@@ -334,16 +324,11 @@ $(function () {
     }
   });
 
-  /*
-  * Display the cards on the page
-  *   - shuffle the list of cards using the provided "shuffle" method below
-  *   - loop through each card and create its HTML
-  *   - add each card's HTML to the page
-  */
+  // Start game function
   let startNewGame = () => {
     // Set starting values
     timerDate = new Date().getTime();
-    timer = setInterval(function() { startTimer() }, 1000);
+    timer = setInterval(function () { startTimer(); }, 1000);
 
     // Start main functions
     fillArrayTwoTimes(cards, cardsIcons);
