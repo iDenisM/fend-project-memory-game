@@ -11,6 +11,7 @@ $(function () {
   let currentPlayer = ''; // Current player name
   let twoClicks = false; // Check if there was done two clicks
   let timer; // The timer variable
+  let currentStars = 3; // Number of start player have at the moment
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -49,17 +50,6 @@ $(function () {
 
     $('.deck').append(content);
   };
-
-  /*
-  * set up the event listener for a card. If a card is clicked:
-  *  - display the card's symbol (put this functionality in another function that you call from this one)
-  *  - if the list already has another card, check to see if the two cards match
-  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
-  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
-  *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
-  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
-  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
-  */
 
   // Display or close the card
   let toggleOpen = (card) => {
@@ -141,9 +131,10 @@ $(function () {
     starsCounter++;
 
     // Condition for star removing
-    if (starsCounter > 10) {
+    if (starsCounter > 10 && currentStars > 1) {
       $('.fa-star').last().toggleClass('fa-star fa-star-o');
       starsCounter = 1;
+      currentStars--;
     }
   };
 
@@ -207,15 +198,23 @@ $(function () {
     $('#recordScoreBtn').on('click', function () {
       // Create local name registration
       // Use a prefix to separate from other local storage data
-      currentPlayer = $('#nameInput').val();
-      let getName = 'name:' + currentPlayer;
-      let score = $('.timer').text();
-      score = score.replace(" ", "").replace(/d|h|m|s/g, "");
-      score = parseInt(score);
-      let getScore = Math.floor((moves - 1) / score * 1000);
-      localStorage.setItem(getName, getScore);
+
       laderPanel();
     });
+  };
+
+  // Calculcate Players score
+  let calcPlayerScore = () => {
+    currentPlayer = $('#nameInput').val();
+    let getName = 'name:' + currentPlayer;
+    let time = $('.timer').text();
+    time = time.replace(" ", "").replace(/d|h|m|s/g, "");
+    time = parseInt(time);
+    let star = currentStars;
+    let getScore = Math.floor(
+      ((1 / (moves - 1)) + (1 / (time / star))) * 1000
+    );
+    localStorage.setItem(getName, getScore);
   };
 
   // Leaderboard panel
@@ -334,12 +333,7 @@ $(function () {
     }
   });
 
-  /*
-  * Display the cards on the page
-  *   - shuffle the list of cards using the provided "shuffle" method below
-  *   - loop through each card and create its HTML
-  *   - add each card's HTML to the page
-  */
+  // Start new game furnction
   let startNewGame = () => {
     // Set starting values
     timerDate = new Date().getTime();
