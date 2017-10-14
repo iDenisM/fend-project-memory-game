@@ -11,6 +11,7 @@ $(function () {
   let currentPlayer = ''; // Current player name
   let twoClicks = false; // Check if there was done two clicks
   let timer; // The timer variable
+  let playerStars = 3; // Player stars number
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -128,12 +129,12 @@ $(function () {
   let calcScore = () => {
     $('.moves').text(moves++);
     starsCounter++;
-    let minStars = $('.moves').text();
 
     // Condition for star removing
-    if (starsCounter > 10 && minStars < 21) {
+    if (starsCounter > 10 && playerStars > 1) {
       $('.fa-star').last().toggleClass('fa-star fa-star-o');
       starsCounter = 1;
+      playerStars--;
     }
   };
 
@@ -195,17 +196,23 @@ $(function () {
       'role': 'button'
     }).text('submit').appendTo('.endGame');
     $('#recordScoreBtn').on('click', function () {
-      // Create local name registration
-      // Use a prefix to separate from other local storage data
-      currentPlayer = $('#nameInput').val();
-      let getName = 'name:' + currentPlayer;
-      let score = $('.timer').text();
-      score = score.replace(" ", "").replace(/d|h|m|s/g, "");
-      score = parseInt(score);
-      let getScore = Math.floor((moves - 1) / score * 1000);
-      localStorage.setItem(getName, getScore);
+      playerPoints();
       laderPanel();
     });
+  };
+
+  // Calculcate players points
+  let playerPoints = () => {
+    // Create local name registration
+    // Use a prefix to separate from other local storage data
+    currentPlayer = $('#nameInput').val();
+    let getName = 'name:' + currentPlayer;
+    let time = $('.timer').text();
+    time = time.replace(" ", "").replace(/d|h|m|s/g, "");
+    time = 1 / (parseInt(time) / playerStars);
+    moves = 1 / (moves - 1);
+    let getScore = Math.floor((moves + time) * 1000;);
+    localStorage.setItem(getName, getScore);
   };
 
   // Leaderboard panel
