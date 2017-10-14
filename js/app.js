@@ -209,9 +209,9 @@ $(function () {
     let getName = 'name:' + currentPlayer;
     let time = $('.timer').text();
     time = time.replace(" ", "").replace(/d|h|m|s/g, "");
-    time = 1 / (parseInt(time) / playerStars);
-    moves = 1 / (moves - 1);
-    let getScore = Math.floor((moves + time) * 1000;);
+    time = 1 / Math.sqrt(parseInt(time));
+    moves = playerStars / (moves - 1);
+    let getScore = Math.floor((moves + time) * 1000);
     localStorage.setItem(getName, getScore);
   };
 
