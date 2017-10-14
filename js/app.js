@@ -11,7 +11,6 @@ $(function () {
   let currentPlayer = ''; // Current player name
   let twoClicks = false; // Check if there was done two clicks
   let timer; // The timer variable
-  let currentStars = 3; // Number of start player have at the moment
 
   // Copy two times the same value of an array into another array
   let fillArrayTwoTimes = (target, source) => {
@@ -129,12 +128,12 @@ $(function () {
   let calcScore = () => {
     $('.moves').text(moves++);
     starsCounter++;
+    let minStars = $('.moves').text();
 
     // Condition for star removing
-    if (starsCounter > 10 && currentStars > 1) {
+    if (starsCounter > 10 && minStars < 21) {
       $('.fa-star').last().toggleClass('fa-star fa-star-o');
       starsCounter = 1;
-      currentStars--;
     }
   };
 
@@ -162,13 +161,13 @@ $(function () {
     let cardDim = (bodyWidth - (deckPadding * 2) - 8) / 4;
     if (bodyWidth <= deckWidth) {
       // Create score panel style
-      let scorePanelStyle = { 'width': '80%' };
+      let scorePanelStyle = { width: '80%' };
 
       // Create deck
-      let deckStyle = { 'width': bodyWidth,
+      let deckStyle = { width: bodyWidth,
                         'min-height': bodyWidth };
-      let cardStyle = { 'width': cardDim,
-                        'height': cardDim };
+      let cardStyle = { width: cardDim,
+                        height: cardDim };
       // Change styles
       $('.score-panel').css(scorePanelStyle);
       $('.deck').css(deckStyle);
@@ -198,23 +197,15 @@ $(function () {
     $('#recordScoreBtn').on('click', function () {
       // Create local name registration
       // Use a prefix to separate from other local storage data
-
+      currentPlayer = $('#nameInput').val();
+      let getName = 'name:' + currentPlayer;
+      let score = $('.timer').text();
+      score = score.replace(" ", "").replace(/d|h|m|s/g, "");
+      score = parseInt(score);
+      let getScore = Math.floor((moves - 1) / score * 1000);
+      localStorage.setItem(getName, getScore);
       laderPanel();
     });
-  };
-
-  // Calculcate Players score
-  let calcPlayerScore = () => {
-    currentPlayer = $('#nameInput').val();
-    let getName = 'name:' + currentPlayer;
-    let time = $('.timer').text();
-    time = time.replace(" ", "").replace(/d|h|m|s/g, "");
-    time = parseInt(time);
-    let star = currentStars;
-    let getScore = Math.floor(
-      ((1 / (moves - 1)) + (1 / (time / star))) * 1000
-    );
-    localStorage.setItem(getName, getScore);
   };
 
   // Leaderboard panel
@@ -333,11 +324,11 @@ $(function () {
     }
   });
 
-  // Start new game furnction
+  // Start game function
   let startNewGame = () => {
     // Set starting values
     timerDate = new Date().getTime();
-    timer = setInterval(function() { startTimer() }, 1000);
+    timer = setInterval(function () { startTimer(); }, 1000);
 
     // Start main functions
     fillArrayTwoTimes(cards, cardsIcons);
